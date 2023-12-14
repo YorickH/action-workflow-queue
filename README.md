@@ -34,11 +34,12 @@ jobs:
 
 ### Inputs
 
-| input          | required | default        | description                                     |
-|----------------|----------|----------------|-------------------------------------------------|
-| `github-token` | ❌       | `github.token` | The GitHub token used to call the GitHub API    |
-| `timeout`      | ❌       | `600000`       | timeout before we stop trying (in milliseconds) |
-| `delay`        | ❌       | `10000`        | delay between status checks (in milliseconds)   |
+| input          | required | default        | description                                             |
+|----------------|----------|----------------|---------------------------------------------------------|
+| `github-token` | ❌       | `github.token` | The GitHub token used to call the GitHub API            |
+| `timeout`      | ❌       | `600000`       | timeout before we stop trying (in milliseconds)         |
+| `delay`        | ❌       | `10000`        | delay between status checks (in milliseconds)           |
+| `regex`        | ❌       | `.*`           | regex for looking up jobs to check if they are running  |
 
 ----
 > Author: [Ahmad Nassri](https://www.ahmadnassri.com/) &bull;

@@ -7,7 +7,7 @@ import { inspect } from 'util'
 import core from '@actions/core'
 import github from '@actions/github'
 
-export default async function ({ octokit, workflow_id, run_id, before }) {
+export default async function ({ octokit, workflow_id, run_id, before, regex }) {
   // get current run of this workflow
   const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
     ...github.context.repo,
@@ -33,7 +33,7 @@ export default async function ({ octokit, workflow_id, run_id, before }) {
         // limit to current running jobs
         .filter(job => ['in_progress'].includes(job.status))
         // limit to these 3 jobs
-        .filter(job => job.name.match(/deploy-dev|e2e-testing|playwright/))
+        .filter(job => job.name.match(regex))
       return crucial_jobs
     });
 

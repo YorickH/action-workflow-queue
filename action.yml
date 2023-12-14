@@ -17,7 +17,11 @@ inputs:
   delay:
     description: delay between status checks (in milliseconds)
     default: "10000"
+  
+  regex:
+    description: regex for jobs to check
+    default: ".*"
 
 runs:
   using: docker
-  image: teamleader/action-workflow-queue:1.2.0
+  image: docker://teamleader/action-workflow-queue:1.2.0

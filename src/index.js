@@ -9,6 +9,7 @@ import main from './lib/index.js'
 
 // parse inputs
 const inputs = {
+  regex: core.getInput('regex', { required: true }),
   token: core.getInput('github-token', { required: true }),
   delay: Number(core.getInput('delay', { required: true })),
   timeout: Number(core.getInput('timeout', { required: true }))
