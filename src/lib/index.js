@@ -11,7 +11,7 @@ import new_runs from './new-runs.js'
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export default async function ({ token, delay, timeout }) {
+export default async function ({ token, delay, timeout, regex }) {
   let timer = 0
 
   // init octokit
