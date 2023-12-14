@@ -23,7 +23,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     // get newer runs
     .filter(run => new Date(run.run_started_at) > after)
 
-  core.info(`found ${waiting_for.length} workflow runs`)
+  core.info(`found ${waiting_for.length} workflow new runs`)
   core.debug(inspect(waiting_for.map(run => ({ id: run.id, name: run.name }))))
 
   return waiting_for
