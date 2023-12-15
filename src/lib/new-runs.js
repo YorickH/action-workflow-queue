@@ -33,7 +33,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
 
     // Join the names into a comma-separated string
     const urlsString = cancellingForUrls.join(', ');
-    core.notice(`🛑 Cancelling this run because there is a more recent one running. More recent runs: ${namesString}`)
+    core.notice(`🛑 Cancelling this run because there is a more recent one running. More recent runs: ${urlsString}`)
     octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
       run_id
