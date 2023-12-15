@@ -26,5 +26,15 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
   core.info(`found ${waiting_for.length} more recent workflow runs`)
   core.debug(inspect(waiting_for.map(run => ({ id: run.id, name: run.name }))))
 
-  return waiting_for
+  // no workflow is running
+  if (waiting_for.length > 0) {
+    core.info('There are more recent runs in progress, cancel this one.')
+    octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
+      ...github.context.repo,
+      run_id
+    });
+  }
+
+
+
 }

@@ -6,7 +6,7 @@ import github from '@actions/github'
 
 // modules
 import runs from './runs.js'
-import new_runs from './new-runs.js'
+import check_new_runs from './new-runs.js'
 
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -30,14 +30,6 @@ export default async function ({ token, delay, timeout, regex }) {
   const before = new Date(run_started_at)
   const after = new Date(run_started_at)
 
-  let fresh_runs = await new_runs({ octokit, run_id, workflow_id, before })
-
-    // no workflow is running
-    if (fresh_runs.length !== 0) {
-      core.info('There are more recent runs in progress, cancel this one.')
-      process.exit(0)
-    }
-
   core.info(`searching for workflow runs before ${before}`)
 
   // get previous runs
@@ -51,6 +43,10 @@ export default async function ({ token, delay, timeout, regex }) {
 
   // if one of them is not completed
   while (waiting_for.find(run => run.status !== 'completed')) {
+
+    // Check for more recent runs that were started
+    check_new_runs({ octokit, run_id, workflow_id, before })
+
     timer += delay
 
     // time out!
