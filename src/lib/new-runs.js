@@ -13,7 +13,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     ...github.context.repo,
     workflow_id
   })
-
+  core.info(inspect(workflow_runs.map(run => ({ id: run.id, name: run.name }))))
   // find any instances of the same workflow
   const waiting_for = workflow_runs
     // limit to currently running ones
