@@ -7,7 +7,7 @@ import { inspect } from 'util'
 import core from '@actions/core'
 import github from '@actions/github'
 
-export default async function ({ octokit, workflow_id, run_id, before, regex }) {
+export default async function ({ octokit, workflow_id, run_id, before, crucial_jobs }) {
   // get current run of this workflow
   const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
     ...github.context.repo,
@@ -29,14 +29,16 @@ export default async function ({ octokit, workflow_id, run_id, before, regex }) 
         run_id: run.id
       });
 
+      const crucialJobNames = crucial_jobs.split(",");
+
       core.info(inspect(jobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
   
-      const crucial_jobs = jobs.filter(job => job.status === 'in_progress' && job.name.match(regex))
+      const crucialJobs = jobs.filter(job => job.status === 'in_progress' && crucialJobNames.includes(job.name));
 
-      core.info(`✅ found ${crucial_jobs.length} jobs matching regex: ${regex} `)
-      core.debug(inspect(crucial_jobs.map(run => ({ id: run.id, name: run.name }))))
-      
-      return crucial_jobs
+      core.info(`✅ found ${crucialJobs.length} jobs found in list: ${crucialJobNames} `)
+      core.info(inspect(crucialJobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
+
+      return crucialJobs
     });
 
   core.debug(inspect(waiting_for.map(run => ({ id: run.id, name: run.name }))))

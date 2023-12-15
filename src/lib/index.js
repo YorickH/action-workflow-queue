@@ -11,7 +11,7 @@ import check_new_runs from './new-runs.js'
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export default async function ({ token, delay, timeout, regex }) {
+export default async function ({ token, delay, timeout, crucial_jobs }) {
   let timer = 0
 
   // init octokit
@@ -34,7 +34,7 @@ export default async function ({ token, delay, timeout, regex }) {
   core.info(`🔎 looking for new workflow runs started after ${after}`)
 
   // get previous runs
-  let waiting_for = await runs({ octokit, workflow_id, run_id, before, regex })
+  let waiting_for = await runs({ octokit, workflow_id, run_id, before, crucial_jobs })
 
   // no workflow is running
   if (waiting_for.length === 0) {
@@ -66,7 +66,7 @@ export default async function ({ token, delay, timeout, regex }) {
     await sleep(delay)
 
     // get the data again
-    waiting_for = await runs({ octokit, run_id, workflow_id, before, regex })
+    waiting_for = await runs({ octokit, run_id, workflow_id, before, crucial_jobs })
   }
 
   core.info('✅ all runs in the queue completed!')
