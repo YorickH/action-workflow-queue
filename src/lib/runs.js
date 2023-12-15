@@ -28,6 +28,8 @@ export default async function ({ octokit, workflow_id, run_id, before, regex }) 
         ...github.context.repo,
         run_id: run.id
       });
+
+      core.info(inspect(jobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
   
       const crucial_jobs = jobs
         // limit to current running jobs
