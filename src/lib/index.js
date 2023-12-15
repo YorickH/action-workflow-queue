@@ -28,7 +28,6 @@ export default async function ({ token, delay, timeout, regex }) {
 
   // date to check against
   const before = new Date(run_started_at)
-  const after = new Date(run_started_at)
 
   core.info(`searching for workflow runs before ${before}`)
 
