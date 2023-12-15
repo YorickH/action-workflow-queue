@@ -7,7 +7,7 @@ import { inspect } from 'util'
 import core from '@actions/core'
 import github from '@actions/github'
 
-export default async function ({ octokit, workflow_id, run_id, before, regex }) {
+export default async function ({ octokit, workflow_id, run_id, regex }) {
   // get current run of this workflow
   const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
     ...github.context.repo,
@@ -21,7 +21,6 @@ export default async function ({ octokit, workflow_id, run_id, before, regex }) 
     // exclude this one
     .filter(run => run.id !== run_id)
     // get older runs
-    .filter(run => new Date(run.run_started_at) < before)
     .filter(async (run) => {
       // Make a separate Octokit request to get jobs for a specific run
       const { data: { jobs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs', {
