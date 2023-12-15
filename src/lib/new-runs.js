@@ -29,7 +29,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
   // no workflow is running
   if (cancelling_for.length > 0) {
     // Function to generate a clickable link
-    const addClickableLink = (link, text) => `\u001B${link}\u0007${text}\u001B\u0007`;
+    const addClickableLink = (link) => `${link}`;
 
     // Create clickable links for each item in the list
     const urlsString = cancelling_for.map(workflow => addClickableLink(workflow.html_url, workflow.id)).join(', ');
