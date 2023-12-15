@@ -14,7 +14,6 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     workflow_id
   })
   core.info(`searching for workflow runs after ${after}`)
-  core.info(inspect(workflow_runs.map(run => ({ id: run.id, name: run.name, run_started_at:run.run_started_at }))))
   // find any instances of the same workflow
   const waiting_for = workflow_runs
     // limit to currently running ones
@@ -33,7 +32,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
       run_id
-    });
+    })
   }
 
 

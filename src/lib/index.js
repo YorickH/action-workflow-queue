@@ -44,6 +44,7 @@ export default async function ({ token, delay, timeout, regex }) {
   // if one of them is not completed
   while (waiting_for.find(run => run.status !== 'completed')) {
 
+    core.info(`-----------------------------------------------------`)
     // Check for more recent runs that were started
     check_new_runs({ octokit, workflow_id, run_id, after })
 
