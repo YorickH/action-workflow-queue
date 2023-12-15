@@ -31,14 +31,11 @@ export default async function ({ octokit, workflow_id, run_id, before, regex }) 
 
       core.info(inspect(jobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
   
-      const crucial_jobs = jobs
-        // limit to current running jobs
-        .filter(job => ['in_progress'].includes(job.status))
-        // limit to these 3 jobs
-        .filter(job => job.name.match(regex))
+      const crucial_jobs = jobs.filter(job => job.status === 'in_progress' && job.name.match(regex))
 
-        core.info(`✅ found ${crucial_jobs.length} jobs matching regex: ${regex} `)
-        core.debug(inspect(crucial_jobs.map(run => ({ id: run.id, name: run.name }))))
+      core.info(`✅ found ${crucial_jobs.length} jobs matching regex: ${regex} `)
+      core.debug(inspect(crucial_jobs.map(run => ({ id: run.id, name: run.name }))))
+      
       return crucial_jobs
     });
 
