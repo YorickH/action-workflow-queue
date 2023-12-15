@@ -28,11 +28,12 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
 
   // no workflow is running
   if (cancelling_for.length > 0) {
-    // Extract the 'name' field from each run in cancelling_for array
-    const cancellingForUrls = cancelling_for.map(run => run.html_url);
+    // Function to generate a clickable link
+    const addClickableLink = (link, text) => `\u001B]8;;${link}\u0007${text}\u001B]8;;\u0007`;
 
-    // Join the names into a comma-separated string
-    const urlsString = cancellingForUrls.join(', ');
+    // Create clickable links for each item in the list
+    const urlsString = cancelling_for.map(workflow => addClickableLink(workflow.html_url, workflow.id)).join(', ');
+
     core.notice(`🛑 Cancelling this run because there is a more recent one running. More recent runs: ${urlsString}`)
     octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
