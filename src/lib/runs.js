@@ -33,7 +33,7 @@ export default async function ({ octokit, workflow_id, run_id, before, crucial_j
 
       core.info(inspect(jobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
   
-      const crucialJobs = jobs.filter(job => job.status === 'in_progress' && crucialJobNames.includes(job.name));
+      const crucialJobs = jobs.filter(job => job.status === 'in_progress' && crucialJobNames.startsWith(job.name));
 
       core.info(`✅ found ${crucialJobs.length} jobs found in list: ${crucialJobNames} `)
       core.info(inspect(crucialJobs.map(job => ({ id: job.id, name: job.name, status: job.status }))))
