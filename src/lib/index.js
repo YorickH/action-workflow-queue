@@ -68,7 +68,7 @@ export default async function ({ token, delay, timeout, regex }) {
     await sleep(delay)
 
     // get the data again
-    waiting_for = await runs({ octokit, run_id, workflow_id, before })
+    waiting_for = await runs({ octokit, run_id, workflow_id, before, regex })
   }
 
   core.info('all runs in the queue completed!')
