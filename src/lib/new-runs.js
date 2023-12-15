@@ -28,7 +28,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
 
   // no workflow is running
   if (waiting_for.length > 0) {
-    core.warning(`🛑 Cancelling this run because there is a more recent one running: ${run.html_url}`)
+    core.notice(`🛑 Cancelling this run because there is a more recent one running: ${run.html_url}`)
     octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
       run_id
