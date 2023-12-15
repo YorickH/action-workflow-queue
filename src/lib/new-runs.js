@@ -29,7 +29,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
   // no workflow is running
   if (cancelling_for.length > 0) {
     // Extract the 'name' field from each run in cancelling_for array
-    const cancellingForUrls = cancelling_for.map(run => run.url);
+    const cancellingForUrls = cancelling_for.map(run => run.html_url);
 
     // Join the names into a comma-separated string
     const urlsString = cancellingForUrls.join(', ');
@@ -38,6 +38,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
       ...github.context.repo,
       run_id
     })
+    process.exit(0)
   }
 
 }
