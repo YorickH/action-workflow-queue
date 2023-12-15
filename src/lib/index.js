@@ -28,11 +28,12 @@ export default async function ({ token, delay, timeout, regex }) {
 
   // date to check against
   const before = new Date(run_started_at)
+  const after = new Date(run_started_at)
 
   core.info(`searching for workflow runs before ${before}`)
 
   // get previous runs
-  let waiting_for = await runs({ octokit, run_id, workflow_id, before, regex })
+  let waiting_for = await runs({ octokit, workflow_id, run_id, before, regex })
 
   // no workflow is running
   if (waiting_for.length === 0) {
@@ -44,7 +45,7 @@ export default async function ({ token, delay, timeout, regex }) {
   while (waiting_for.find(run => run.status !== 'completed')) {
 
     // Check for more recent runs that were started
-    check_new_runs({ octokit, run_id, workflow_id, before })
+    check_new_runs({ octokit, workflow_id, run_id, after })
 
     timer += delay
 
