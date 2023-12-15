@@ -24,4 +24,4 @@ inputs:
 
 runs:
   using: docker
-  image: docker://teamleader/action-workflow-queue:1.2.3
+  image: docker://teamleader/action-workflow-queue:1.2.4
