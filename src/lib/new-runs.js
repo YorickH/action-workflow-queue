@@ -13,7 +13,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     ...github.context.repo,
     workflow_id
   })
-  core.info(`searching for workflow runs after ${after}`)
+
   // find any instances of the same workflow
   const waiting_for = workflow_runs
     // limit to currently running ones
@@ -23,12 +23,12 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
     // get newer runs
     .filter(run => new Date(run.run_started_at) > after)
 
-  core.info(`found ${waiting_for.length} more recent workflow runs`)
-  core.debug(inspect(waiting_for.map(run => ({ id: run.id, name: run.name }))))
+  core.info(`ℹ️ found ${waiting_for.length} more recent workflow runs`)
+  core.debug(inspect(waiting_for.map(run => ({ id: run.id, name: run.name, run_started_at: run.run_started_at }))))
 
   // no workflow is running
   if (waiting_for.length > 0) {
-    core.info('There are more recent runs in progress, cancel this one.')
+    core.warning(`🛑 Cancelling this run because there is a more recent one running: ${run.html_url}`)
     octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
       run_id

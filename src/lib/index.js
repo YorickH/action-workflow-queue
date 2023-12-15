@@ -30,14 +30,15 @@ export default async function ({ token, delay, timeout, regex }) {
   const before = new Date(run_started_at)
   const after = new Date(run_started_at)
 
-  core.info(`searching for workflow runs before ${before}`)
+  core.info(`🔎 looking for workflow runs before ${before}`)
+  core.info(`🔎 looking for new workflow runs started after ${after}`)
 
   // get previous runs
   let waiting_for = await runs({ octokit, workflow_id, run_id, before, regex })
 
   // no workflow is running
   if (waiting_for.length === 0) {
-    core.info('no active run of this workflow found')
+    core.info('✅ no active run of this workflow found')
     process.exit(0)
   }
 
@@ -57,16 +58,16 @@ export default async function ({ token, delay, timeout, regex }) {
     }
 
     for (const run of waiting_for) {
-      core.info(`waiting for run #${run.id}: current status: ${run.status}`)
+      core.info(`🏃🏻‍♂️ waiting for run #${run.id}: current status: ${run.status}`)
     }
 
     // zzz
-    core.info(`waiting for #${delay/1000} seconds before polling the status again`)
+    core.info(`⏳ waiting for #${delay/1000} seconds before polling the status again`)
     await sleep(delay)
 
     // get the data again
     waiting_for = await runs({ octokit, run_id, workflow_id, before, regex })
   }
 
-  core.info('all runs in the queue completed!')
+  core.info('✅ all runs in the queue completed!')
 }
