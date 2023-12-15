@@ -30,7 +30,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
   // no workflow is running
   if (waiting_for.length > 0) {
     core.info('There are more recent runs in progress, cancel this one.')
-    octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
+    octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel', {
       ...github.context.repo,
       run_id
     });
