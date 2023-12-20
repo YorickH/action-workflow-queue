@@ -39,6 +39,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
       ...github.context.repo,
       run_id
     })
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
     await sleep(5000)
   }
 
