@@ -39,7 +39,7 @@ export default async function ({ octokit, workflow_id, run_id, after }) {
       ...github.context.repo,
       run_id
     })
-    process.exit(1)
+    await sleep(5000)
   }
 
 }
