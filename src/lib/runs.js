@@ -17,7 +17,7 @@ export default async function ({ octokit, workflow_id, run_id, before, crucial_j
   // find any instances of the same workflow
   const waiting_for = workflow_runs
     // limit to currently running ones
-    .filter(run => ['in_progress'].includes(run.status))
+    .filter(run => ['in_progress', 'queued', 'waiting', 'pending'].includes(run.status))
     // exclude this one
     .filter(run => run.id !== run_id)
     // get older runs
